@@ -1,0 +1,166 @@
+-----Basic VM code-----
+-on clone VM1 and VM2-
+
+Sudo apt update
+
+Sudo apt install apache2 -y
+
+Sudo apt install net-tools
+
+Sudo nano /var/www/html/index.html
+
+Inside file: default page 1
+<h1>Welcome to Virtual Machine 1</h1>
+<p>Apache Web Server - VM1</p>
+^O Enter ^X
+
+Sudo systemctl enable apache2
+
+Sudo systemctl status apache2
+
+ifconfig or ip -4 addr -> copy ip address
+
+Inside firefox paste the ip --> http://VM1_IP_ADDRESS
+
+-----load_balncing------
+-on VM-
+
+Sudo apt update
+
+Sudo apt install haproxy -y
+
+sudo nano /etc/haproxy/haproxy.cfg
+
+Inside file below defaults
+
+frontend http_front
+             bind *:80
+             default_backend http_back
+
+backend http_back
+             balance roundrobin
+            server vm1 192.168
+169.223:80 check 
+server vm2 192.168
+169.221:80 check 
+
+Save
+
+sudo systemctl restart haproxy 
+
+Sudo systemctl enable haproxy 
+
+Sudo systemctl status haproxy 
+
+Sudo apt install net-tools
+
+Ifconfig or ip -4 addr -> copy ip
+
+-----Server Consolidation-----
+
+Step 1: On VM1 and VM2, execute:
+
+free -h
+nproc
+df -h
+
+These commands display memory, CPU count, and disk usage.
+
+Step 2: Consolidate the virtual machines
+1. Open VirtualBox.
+2. Keep VM1 and VM2 running on the same physical computer.
+3. Allocate only the required CPU cores and RAM to each VM.
+4. Avoid assigning more total resources than the host can reasonably support.
+5. If several physical hosts are available, plan to move the VMs onto fewer hosts, 
+subject to their combined resource requirements.
+
+(How to demonstrate consolidation in your lab
+1. Open VirtualBox Manager and show VM1 and VM2 on the same computer.
+2. Power off each VM before changing its CPU or RAM allocation.
+3. Open Settings → System → Motherboard to adjust RAM.
+4. Open Settings → System → Processor to adjust CPU allocation.
+5. Start both VMs and verify that their Apache web servers are running.
+6. Observe the host computer's CPU and memory usage in Task Manager.)
+
+Step 3: Verify the services
+On both VM1 and VM2, run:
+
+sudo systemctl status apache2
+
+
+Confirm that both web servers are active.
+Step 4: Observe resource utilization
+On the host computer, open Task Manager in 
+Windows or use the following command on Ubuntu:
+
+top
+
+
+Compare resource utilization before 
+and after adjusting the VM allocations.
+
+Expected result: Multiple virtual servers operate 
+on a shared physical host with appropriately allocated resources, 
+improving utilization and potentially reducing infrastructure costs.
+
+Note: Running two VMs on one computer demonstrates resource sharing. 
+Actual migration from multiple physical hosts to fewer hosts requires 
+a suitable virtualization environment and migration procedure.
+
+
+-----Fault Tolerance-----
+
+Step 1: Verify both web servers
+
+On VM1:
+sudo systemctl status apache2
+
+
+On VM2:
+sudo systemctl status apache2
+
+
+Ensure both services are running and HAProxy is configured as in Part 1, Task 2.
+
+Step 2: Test normal operation
+
+Open Firefox and visit:
+http://VM3_IP_ADDRESS
+
+
+Confirm that the web application is accessible through HAProxy.
+
+Step 3: Simulate a failure on VM1
+
+On VM1, stop Apache:
+sudo systemctl stop apache2
+
+
+Step 4: Verify failover
+
+On VM3, check HAProxy:
+sudo systemctl status haproxy
+
+
+Then revisit or refresh:
+http://VM3_IP_ADDRESS
+
+
+HAProxy should detect that VM1 is unhealthy and send requests to VM2, 
+provided VM2 remains available and reachable.
+
+Step 5: Restore VM1
+
+On VM1, execute:
+sudo systemctl start apache2
+sudo systemctl enable apache2
+
+
+After the health check succeeds, 
+HAProxy should include VM1 in the backend pool again.
+
+Step 6: Verify recovery
+Refresh the HAProxy address several times and verify that the service remains accessible.
+
+Expected result: The web service continues to respond when one backend server fails, 
+and the failed server can rejoin the pool after recovery.

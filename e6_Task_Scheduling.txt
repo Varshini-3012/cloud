@@ -10,3 +10,11 @@ Procedure
 8. Choose an appropriate target, such as an HTTP endpoint.
 9. Enter the endpoint URL and configure authentication if required.
 10. Click Create and use Run now to test the job.
+
+Example cron expression:
+*/5 * * * *
+
+
+This schedules the job to run every five minutes.
+
+Result: A scheduled cloud job was configured to execute automatically at the specified intervals.

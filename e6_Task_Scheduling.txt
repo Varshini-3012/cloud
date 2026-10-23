@@ -1,0 +1,12 @@
+Procedure
+
+1. Open the Google Cloud Console and sign in.
+2. Create or select a Google Cloud project.
+3. Navigate to Cloud Scheduler in the console.
+4. Enable the Cloud Scheduler API if prompted.
+5. Click Create Job.
+6. Enter a job name, region, and schedule using a cron expression.
+7. Select the required time zone.
+8. Choose an appropriate target, such as an HTTP endpoint.
+9. Enter the endpoint URL and configure authentication if required.
+10. Click Create and use Run now to test the job.

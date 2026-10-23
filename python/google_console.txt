@@ -1,0 +1,28 @@
+PROCEDURE
+
+Task 1: Access the Google Cloud Console
+1. Open a web browser.
+2. Visit https://console.cloud.google.com/.
+3. Sign in using your Google account.
+4. Accept the terms and conditions if prompted.
+
+Task 2: View Projects in the Cloud Console
+1. Open the Google Cloud Console.
+2. Click the project selector at the top of the page.
+3. View the list of available projects.
+4. Select an existing project or create a new project if permitted.
+
+Task 3: Review and Modify Roles and Permissions
+1. Select the required project.
+2. Navigate to IAM & Admin → IAM.
+3. Review the users, service accounts, roles, and permissions assigned to the project.
+4. Select an existing principal and edit its role, or click Grant access to add a principal.
+5. Assign the required permissions and save the changes.
+
+Task 4: Enable APIs and Services
+1. Select the required project.
+2. Navigate to APIs & Services → Library.
+3. Search for an API, such as the Compute Engine API.
+4. Select the API.
+5. Click Enable.
+6. Open APIs & Services → Enabled APIs & services to verify that it is enabled.
